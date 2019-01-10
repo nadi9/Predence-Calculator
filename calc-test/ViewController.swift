@@ -16,11 +16,11 @@ class ViewController: UIViewController {
     var operators = [Operator]()
     let calc = Calculator()
     
-    @IBOutlet weak var calcLabel: UILabel!
+    @IBOutlet weak var calcDisplay: UILabel!
     
     
     @IBAction func reset() {
-        updateCalcLabel(with: 0)
+        displayValue = 0
         self.operators.removeAll()
         self.operands.removeAll()
     }
@@ -30,23 +30,19 @@ class ViewController: UIViewController {
     @IBAction func getDigit(_ sender: UIButton) {
         isNumberAlreadyAdded = false
         if self.isUserInTheMiddleOfTyping {
-            calcLabel.text! += (sender.titleLabel?.text!)!
+            calcDisplay.text! += (sender.titleLabel?.text!)!
         } else {
-            calcLabel.text! = (sender.titleLabel?.text!)!
+            calcDisplay.text! = (sender.titleLabel?.text!)!
             isUserInTheMiddleOfTyping = true
         }
     }
     
-    func updateCalcLabel(with newValue: Decimal) {
-       // let formatter = NumberFormatter()
-       // formatter.numberStyle = NumberFormatter.Style.decimal
-       // formatter.maximumFractionDigits = 8
-        self.calcLabel.text = String(describing: newValue)
-    }
-    
-    var number: Decimal {
+    var displayValue: Decimal {
         get {
-            return Decimal(string: calcLabel.text!)!
+            return NumberFormatter().number(from: calcDisplay.text!)!.decimalValue
+        }
+        set {
+            self.calcDisplay.text = String(describing: newValue)
         }
     }
     
@@ -59,7 +55,6 @@ class ViewController: UIViewController {
         let multiplication = Operator(for: "*", precedence: 4, sign: .multiply)
         let division = Operator(for: "/", precedence: 4, sign: .division)
         
-
         switch sender.titleLabel?.text! {
         case "+":
             performOperation(with: plus)
@@ -73,20 +68,24 @@ class ViewController: UIViewController {
         case "÷":
             performOperation(with: division)
             operators.append(division)
-        default:
-            break
+        default: break
         }
+        
+       
     }
     
-   
+    func performOperation2(operation: String) {
+        
+    }
+    
     func performOperation(with: Operator) {
-        updateCalculatorValues()
+        setCalculatorValues()
         let result = calc.calculate(with)
         guard let validNumber = result else {
             return
         }
         updateValues(with: validNumber)
-        updateCalcLabel(with: validNumber)
+        displayValue = validNumber
     }
     
     func updateValues(with newValue: Decimal) {
@@ -97,7 +96,7 @@ class ViewController: UIViewController {
         print(self.operands)
         print(self.operators)
     }
-    func updateCalculatorValues() {
+    func setCalculatorValues() {
         calc.operators = self.operators
         calc.values = self.operands
         print(self.operands)
@@ -106,10 +105,9 @@ class ViewController: UIViewController {
     
     func stopTypingNumber() {
         isUserInTheMiddleOfTyping = false
-       
         //protection from adding the number to the stack more than once
         if !isNumberAlreadyAdded {
-             self.operands.append(number)
+            self.operands.append(displayValue)
             isNumberAlreadyAdded  = true
         }
     }
