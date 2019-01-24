@@ -11,21 +11,24 @@ import UIKit
 class ViewController: UIViewController {
     
     var isUserInTheMiddleOfTyping = false
+    var userAlreadyPressedDot = false
     var isNumberAlreadyAdded = false
-    var operands = [Decimal]()
-    var operators = [Operator]()
     let calc = Calculator()
     
     @IBOutlet weak var calcDisplay: UILabel!
     
-    
     @IBAction func reset() {
+        isUserInTheMiddleOfTyping = false
         displayValue = 0
-        self.operators.removeAll()
-        self.operands.removeAll()
+        calc.reset()
     }
     
-    
+    @IBAction func appendDot() {
+        if !userAlreadyPressedDot {
+            calcDisplay.text! += "."
+            userAlreadyPressedDot = true
+        }
+    }
     
     @IBAction func getDigit(_ sender: UIButton) {
         isNumberAlreadyAdded = false
@@ -49,78 +52,32 @@ class ViewController: UIViewController {
     
     @IBAction func appendOperator(_ sender: UIButton) {
         stopTypingNumber()
+        let symbol = sender.titleLabel?.text!
+        let  result = calc.calculate(symbol: symbol!)
+        calc.pushOperation(symbol: symbol!)
         
-        let plus = Operator(for: "+", precedence: 1, sign: .add)
-        let minus = Operator(for: "-", precedence: 1, sign: .minus)
-        let multiplication = Operator(for: "*", precedence: 4, sign: .multiply)
-        let division = Operator(for: "/", precedence: 4, sign: .division)
-        
-        switch sender.titleLabel?.text! {
-        case "+":
-            performOperation(with: plus)
-            operators.append(plus)
-        case "−":
-            performOperation(with: minus)
-            operators.append(minus)
-        case "×":
-            performOperation(with: multiplication)
-            operators.append(multiplication)
-        case "÷":
-            performOperation(with: division)
-            operators.append(division)
-        default: break
-        }
-        
-       
-    }
-    
-    func performOperation2(operation: String) {
-        
-    }
-    
-    func performOperation(with: Operator) {
-        setCalculatorValues()
-        let result = calc.calculate(with)
-        guard let validNumber = result else {
+        guard let validResult = result else {
             return
         }
-        updateValues(with: validNumber)
-        displayValue = validNumber
-    }
-    
-    func updateValues(with newValue: Decimal) {
-        _ = self.operands.popLast()
-        _ = self.operands.popLast()
-        self.operands.append(newValue)
-        _ = operators.popLast()
-        print(self.operands)
-        print(self.operators)
-    }
-    func setCalculatorValues() {
-        calc.operators = self.operators
-        calc.values = self.operands
-        print(self.operands)
-        print(self.operators)
+        displayValue = validResult
     }
     
     func stopTypingNumber() {
         isUserInTheMiddleOfTyping = false
+        userAlreadyPressedDot = false
+        
         //protection from adding the number to the stack more than once
         if !isNumberAlreadyAdded {
-            self.operands.append(displayValue)
+            calc.pushOperand(newElement: displayValue)
             isNumberAlreadyAdded  = true
         }
     }
     
-    func performAllOperations() {
-        while !self.operators.isEmpty {
-            performOperation(with: self.operators.last!)
-        }
-    }
     
     @IBAction func calculateTotal() {
         stopTypingNumber()
-        performAllOperations()
+        var validResult = calc.getTotal()
+        displayValue = validResult
     }
     
 }

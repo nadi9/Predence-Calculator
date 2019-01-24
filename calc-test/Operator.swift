@@ -30,7 +30,6 @@ struct Operator {
         self.sign = sign
     }
     
-    
     func perform(l: Decimal, r: Decimal) -> Decimal {
         switch sign {
         case .add:
