@@ -20,6 +20,7 @@ class Calculator {
                            "−": Operator(for: "−", precedence: 1, sign: .minus),
                            "×": Operator(for: "×", precedence: 4, sign: .multiply),
                            "÷": Operator(for: "÷", precedence: 4, sign: .division),
+                          // "√": Operator(for: "√", precedence: 4, sign: .squareRoot),
         ]
     }
     
@@ -41,6 +42,7 @@ class Calculator {
     func calculate(symbol: String) -> Decimal?  {
         var result: Decimal?
         let curOp = knownOperations[symbol]
+        
         if values.count >= 2 {
             if (operators.last?.precedence)! >= curOp!.precedence {
                 result = operators.last!.perform(l: values.popLast()!, r: values.popLast()!)
@@ -49,6 +51,7 @@ class Calculator {
             }
             
         }
+        
 //        print(values)
 //        print(operators)
 //        print("-----------")
@@ -56,11 +59,12 @@ class Calculator {
         return result
     }
     
-    func  calculate() -> Decimal? {
-        if !operators.isEmpty {
-            let currentOperator = operators.popLast()
-        }
-        return nil
+    func performSquareRoot() -> Decimal? {
+        print(values)
+        let value = self.values.popLast()
+        let result = sqrt(NSDecimalNumber(decimal: value!).doubleValue)
+        self.values.append(Decimal(result))
+        return Decimal(result)
     }
     
     func getTotal() -> Decimal {

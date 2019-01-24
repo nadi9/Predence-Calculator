@@ -155,6 +155,9 @@
                                 <rect key="frame" x="191.5" y="87.5" width="84" height="108"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="27"/>
                                 <state key="normal" title="√"/>
+                                <connections>
+                                    <action selector="squareRoot" destination="BYZ-38-t0r" eventType="touchUpInside" id="HYq-71-8eJ"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cgJ-2B-pIU">
                                 <rect key="frame" x="191.5" y="551" width="84" height="108"/>
