@@ -46,6 +46,7 @@ class ViewController: UIViewController {
         }
         set {
             self.calcDisplay.text = String(describing: newValue)
+            stopTypingNumber()
         }
     }
     
