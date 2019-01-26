@@ -20,7 +20,7 @@ class Calculator {
                            "−": Operator(for: "−", precedence: 1, sign: .minus),
                            "×": Operator(for: "×", precedence: 4, sign: .multiply),
                            "÷": Operator(for: "÷", precedence: 4, sign: .division),
-                          // "√": Operator(for: "√", precedence: 4, sign: .squareRoot),
+                           "√": Operator(for: "√", precedence: 4, sign: .squareRoot),
         ]
     }
     
@@ -40,27 +40,32 @@ class Calculator {
     }
     
     func calculate(symbol: String) -> Decimal?  {
-        var result: Decimal?
-        let curOp = knownOperations[symbol]
         
-        if values.count >= 2 {
-            if (operators.last?.precedence)! >= curOp!.precedence {
-                result = operators.last!.perform(l: values.popLast()!, r: values.popLast()!)
-                pushOperand(newElement: result!)
-                _ = operators.popLast()
+        if !values.isEmpty {
+            let curOp = knownOperations[symbol]
+            
+            switch curOp!.sign {
+            case .squareRoot:
+                let value = self.values.popLast()
+                let result = sqrt(NSDecimalNumber(decimal: value!).doubleValue)
+                self.values.append(Decimal(result))
+                return Decimal(result)
+            default:
+                if values.count >= 2 {
+                    if (operators.last?.precedence)! >= curOp!.precedence {
+                        let result = operators.last!.perform(l: values.popLast()!, r: values.popLast()!)
+                        pushOperand(newElement: result)
+                        _ = operators.popLast()
+                        return result
+                    }
+                }
             }
             
         }
-        
-//        print(values)
-//        print(operators)
-//        print("-----------")
-        
-        return result
+        return nil
     }
     
     func performSquareRoot() -> Decimal? {
-        print(values)
         let value = self.values.popLast()
         let result = sqrt(NSDecimalNumber(decimal: value!).doubleValue)
         self.values.append(Decimal(result))
@@ -70,7 +75,7 @@ class Calculator {
     func getTotal() -> Decimal {
         var result:Decimal = 0
         while !operators.isEmpty {
-          result = calculate(symbol: operators.last!.value)!
+            result = calculate(symbol: operators.last!.value)!
         }
         return result
     }

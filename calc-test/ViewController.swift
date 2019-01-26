@@ -40,7 +40,7 @@ class ViewController: UIViewController {
         displayValue = validResult
     }
     
-    @IBAction func getDigit(_ sender: UIButton) {
+    @IBAction func appendDigit(_ sender: UIButton) {
         isNumberAlreadyAdded = false
         if self.isUserInTheMiddleOfTyping {
             calcDisplay.text! += (sender.titleLabel?.text!)!
@@ -86,7 +86,7 @@ class ViewController: UIViewController {
     
     @IBAction func calculateTotal() {
         stopTypingNumber()
-        var validResult = calc.getTotal()
+        let validResult = calc.getTotal()
         displayValue = validResult
     }
     

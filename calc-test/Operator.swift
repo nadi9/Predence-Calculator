@@ -22,7 +22,7 @@ struct Operator {
         case multiply
         case minus
         case division
-        //case squareRoot
+        case squareRoot
     }
     
     init(for value: String, precedence: Int, sign: MainMathOperators) {
@@ -41,10 +41,10 @@ struct Operator {
             return l * r
         case .division:
             return r / l
-//        case .squareRoot:
-//            //sqrt function does not accept decimal as parameter
-//            let result = sqrt(NSDecimalNumber(decimal: l).doubleValue)
-//            return Decimal(result)
+        case .squareRoot:
+            //sqrt function does not accept decimal as parameter
+            let result = sqrt(NSDecimalNumber(decimal: l).doubleValue)
+            return Decimal(result)
         }
     }
     
