@@ -30,16 +30,6 @@ class ViewController: UIViewController {
         }
     }
     
-    // MARK: bad style, this function should be refactored
-    @IBAction func squareRoot() {
-        stopTypingNumber()
-        let result = calc.performSquareRoot()
-        guard let validResult = result else {
-            return
-        }
-        displayValue = validResult
-    }
-    
     @IBAction func appendDigit(_ sender: UIButton) {
         isNumberAlreadyAdded = false
         if self.isUserInTheMiddleOfTyping {

@@ -65,13 +65,6 @@ class Calculator {
         return nil
     }
     
-    func performSquareRoot() -> Decimal? {
-        let value = self.values.popLast()
-        let result = sqrt(NSDecimalNumber(decimal: value!).doubleValue)
-        self.values.append(Decimal(result))
-        return Decimal(result)
-    }
-    
     func getTotal() -> Decimal {
         var result:Decimal = 0
         while !operators.isEmpty {
