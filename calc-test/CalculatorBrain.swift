@@ -65,8 +65,8 @@ class Calculator {
         return nil
     }
     
-    func getTotal() -> Decimal {
-        var result:Decimal = 0
+    func getTotal() -> Decimal? {
+        var result: Decimal? = nil
         while !operators.isEmpty {
             result = calculate(symbol: operators.last!.value)!
         }

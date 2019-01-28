@@ -11,7 +11,7 @@ import UIKit
 class ViewController: UIViewController {
     
     var isUserInTheMiddleOfTyping = false
-    var userAlreadyPressedDot = false
+    var userDidNotEnterDot = false
     var isNumberAlreadyAdded = false
     let calc = Calculator()
     
@@ -24,20 +24,34 @@ class ViewController: UIViewController {
     }
     
     @IBAction func appendDot() {
-        if !userAlreadyPressedDot {
+        isUserInTheMiddleOfTyping = true
+        if  !userDidNotEnterDot {
             calcDisplay.text! += "."
-            userAlreadyPressedDot = true
+            userDidNotEnterDot = true
         }
     }
     
     @IBAction func appendDigit(_ sender: UIButton) {
         isNumberAlreadyAdded = false
-        if self.isUserInTheMiddleOfTyping {
-            calcDisplay.text! += (sender.titleLabel?.text!)!
+        
+        if isUserInTheMiddleOfTyping {
+            
+            if calcDisplay.text! == "0" {
+                if !userDidNotEnterDot {
+                   calcDisplay.text! = (sender.titleLabel?.text!)!
+                } else {
+                    calcDisplay.text! += (sender.titleLabel?.text!)!
+                }
+            } else {
+                calcDisplay.text! += (sender.titleLabel?.text!)!
+            }
+            
+            //calcDisplay.text! += (sender.titleLabel?.text!)!
         } else {
             calcDisplay.text! = (sender.titleLabel?.text!)!
             isUserInTheMiddleOfTyping = true
         }
+        
     }
     
     var displayValue: Decimal {
@@ -65,7 +79,7 @@ class ViewController: UIViewController {
     
     func stopTypingNumber() {
         isUserInTheMiddleOfTyping = false
-        userAlreadyPressedDot = false
+        userDidNotEnterDot = false
         
         //protection from adding the number to the stack more than once
         if !isNumberAlreadyAdded {
@@ -77,7 +91,9 @@ class ViewController: UIViewController {
     
     @IBAction func calculateTotal() {
         stopTypingNumber()
-        let validResult = calc.getTotal()
+        guard let validResult = calc.getTotal() else {
+            return
+        }
         displayValue = validResult
     }
     
