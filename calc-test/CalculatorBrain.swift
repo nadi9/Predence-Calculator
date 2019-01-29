@@ -49,6 +49,7 @@ class Calculator {
                 let value = self.values.popLast()
                 let result = sqrt(NSDecimalNumber(decimal: value!).doubleValue)
                 self.values.append(Decimal(result))
+                _ = operators.popLast()
                 return Decimal(result)
             default:
                 if values.count >= 2 {
@@ -69,6 +70,9 @@ class Calculator {
         var result: Decimal? = nil
         while !operators.isEmpty {
             result = calculate(symbol: operators.last!.value)!
+            print(operators)
+            print(values)
+            print("--------")
         }
         return result
     }

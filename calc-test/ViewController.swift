@@ -38,15 +38,13 @@ class ViewController: UIViewController {
             
             if calcDisplay.text! == "0" {
                 if !userDidNotEnterDot {
-                   calcDisplay.text! = (sender.titleLabel?.text!)!
+                    calcDisplay.text! = (sender.titleLabel?.text!)!
                 } else {
                     calcDisplay.text! += (sender.titleLabel?.text!)!
                 }
             } else {
                 calcDisplay.text! += (sender.titleLabel?.text!)!
             }
-            
-            //calcDisplay.text! += (sender.titleLabel?.text!)!
         } else {
             calcDisplay.text! = (sender.titleLabel?.text!)!
             isUserInTheMiddleOfTyping = true
@@ -92,6 +90,7 @@ class ViewController: UIViewController {
     @IBAction func calculateTotal() {
         stopTypingNumber()
         guard let validResult = calc.getTotal() else {
+            print("error")
             return
         }
         displayValue = validResult
