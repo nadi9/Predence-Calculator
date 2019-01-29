@@ -10,6 +10,10 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
+    }
+    
     var isUserInTheMiddleOfTyping = false
     var userDidNotEnterDot = false
     var isNumberAlreadyAdded = false
